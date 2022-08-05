@@ -3,6 +3,7 @@ const students=[];
 const name_inp=document.getElementById('name');
 const address_inp=document.getElementById('address');
 const score_inp=document.getElementById('score');
+// document.click=addRowHandlers();
 function Student(name, address, score) {
     this.id=++id;
     this.name=name;
@@ -23,11 +24,12 @@ function display(){
     // script.type = 'text/javascript';
     // document.getElementsByTagName("head")[0].appendChild(script);
     $("#table").find("tr:not(:first)").remove();
-    
+
 
     for(student of students){
 
         var row=table.insertRow();
+        row.onclick = addRowHandlers();
         var col0=row.insertCell(0);
         var col1=row.insertCell(1);
         var col2=row.insertCell(2);
@@ -52,7 +54,6 @@ function resetForm() {
     name_inp.value="";
     address_inp.value="";
     score_inp.value="";
-    console.log("reset");
 }
 
 function createStudent() {
@@ -73,7 +74,6 @@ function removeStudent(btn){
     var student=btn.parentElement.parentElement;
     var index=students.findIndex(x=> x.id==student.id);
     students.splice(index,1);
-    console.log(index);
     display();
 }
 
@@ -81,4 +81,30 @@ function editStudent(btn){
     var student=btn.parentElement.parentElement;
     var index=students.findIndex(x=> x.id==student.id);
     
+}
+
+function addRowHandlers() {
+    var table = document.getElementById("table");
+    var rows = table.getElementsByTagName("tr");
+    for (i = 1; i < rows.length; i++) {
+      var currentRow = table.rows[i];
+      var createClickHandler = function(row) {
+        return function() {
+            name_inp.value=row.getElementsByTagName("td")[1];
+            address_inp.value=row.getElementsByTagName("td")[2];
+            score_inp.value=row.getElementsByTagName("td")[3];
+
+            // console.log(row.getElementsByTagName("td")[1]);
+            // console.log(row.getElementsByTagName("td")[2]);
+            // console.log(row.getElementsByTagName("td")[3]);
+
+
+            // alert("df");
+        //   var cell = row.getElementsByTagName("td")[0];
+        //   var id = cell.innerHTML;
+        //   alert("id:");
+        };
+      };
+      currentRow.onclick = createClickHandler(currentRow);
+    }
 }
